@@ -1,7 +1,11 @@
-# Temporary files and folders
+# Temporary Files and Folders
 tmp/*
 *.tmp
 **/*/tmp/*
 
 # Logs
 *.log
+
+# Ruby Stuff
+Gemfile.lock
+*.gem

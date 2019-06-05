@@ -9,7 +9,6 @@ require 'yaml'
 
 module Redwood
 	CONFIG_FILE_NAME = '.redwood.yaml'
-	CONFIG = YAML.load_file resolve_config
 	
 	##
 	# Resolves the location of the config file. 
@@ -36,4 +35,8 @@ module Redwood
 
 		config_path.join '.redood.yaml'
 	end
+
+	
+	CONFIG = YAML.load_file resolve_config
+	
 end
