@@ -4,8 +4,9 @@
 # by Donald Isaac (https://www.opensourceryumd.com)
 # Copyright (c) 2019 Open Sourcery. See LICENSE for license details.
 
-require 'redwood'
 require 'pathname'
+
+gem 'redwood'
 
 module Redwood
 	ENGINE = ViewEngine.new # Pathname.new(Dir.pwd).join 'src'
