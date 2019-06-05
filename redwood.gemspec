@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
 	s.files       = ["lib/redwood.rb"]
 	s.homepage    = 'https://www.opensourceryumd.com'
 	s.license     = 'MIT'
+	s.bindir	  = 'bin'
 	s.files       = `git ls-files`.split("\n")
 
 	s.test_files  = `git ls-files -- {test}/*`.split("\n")
