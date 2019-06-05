@@ -10,18 +10,59 @@ require 'getoptlong'
 require 'redwood'
 
 # Base command usage message
-USAGE = <<-EOF
+USAGE = {}
+HELP = {}
+
+# Usage messages
+
+USAGE[:base] = <<-EOF
+usage: redwood [--help] [--version] command
 EOF
 
-# 'generate' command usage message
-USAGE_GENERATE = <<-EOF
+USAGE[:generate] = <<-EOF
+usage: redwood generate [--help] <component> [--name <name>]
 EOF
 
-# 'new' command usage message
-USAGE_NEW = <<-EOF
+USAGE[:new] = <<-EOF
+usage: redwood new [--help] --name <name>
 EOF
 
-HELP = <<-EOF
+USAGE[:render] = <<-EOF
+usage: redwood render [--help] <root-dir>
+EOF
+
+# Help messages
+
+HELP[:base] = <<-EOF
+usage: redwood [--help] [--version] <command>
+
+Options:
+	-h, --help			Display this help message
+	-v, --version		Display Redwood's version
+
+Available commands:
+	new					Create a new Redwood project
+	generate			Generate a new view component
+	render				Compile a project into a servable site
+EOF
+
+HELP[:generate] = <<-EOF
+EOF
+
+HELP[:new] = <<-EOF
+usage: redwood new [--help] --name <name>
+
+Discription:
+	This command generates a project skeleton for you to start your site from.
+	The skeleton is populated with the required view component directories, 
+	along with a default .redwood.yaml file.
+
+Options:
+	-h, --help			Display this help message
+	-n, --name			Required. The name of the new project
+EOF
+
+HELP[:render] = <<-EOF
 EOF
 
 # :_ key is all unnamed arguments from ARGV
@@ -43,8 +84,12 @@ ARGV.each do |arg|
 	end
 end
 
-if ARGS[:help]
-	puts HELP 
+if ARGS[:help] || !!ARGV.length
+	if ARGS[:command] && HELP.include?(ARGS[:command].to_sym)
+		puts HELP[ARGS[:command].to_sym] 
+	else
+		puts HELP[:base]
+	end
 	exit 0
 end
 

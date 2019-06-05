@@ -9,6 +9,7 @@ require 'yaml'
 
 module Redwood
 	CONFIG_FILE_NAME = '.redwood.yaml'
+	@config = nil
 	
 	##
 	# Resolves the location of the config file. 
@@ -19,24 +20,29 @@ module Redwood
 	#
 	# @return The absolute path to the config file.
 	#
-	def resolve_config
+	def self.resolve_config
 		config_path = Pathname.new Dir.pwd
 
 		# Ascend up the file tree until a .redwood.yaml file is found
 		until config_path.children(false).include? CONFIG_FILE_NAME do
 			# A path is equal to its parent if and only if it is the root directory
 			if config_path == config_path.parent
-				raise IOError 'Redwood: Could not find a ' + CONFIG_FILE_NAME +
+				raise IOError.new 'Redwood: Could not find a ' + CONFIG_FILE_NAME +
 				' file. Are you running this command in your project directory?'
 			else
 				config_path = config_path.parent
 			end
 		end
 
-		config_path.join '.redood.yaml'
+		config_path.join CONFIG_FILE_NAME
 	end
 
-	
-	CONFIG = YAML.load_file resolve_config
+	def self.config
+		if !@config
+			@config = resolve_config
+		else
+			@config
+		end
+	end
 	
 end
