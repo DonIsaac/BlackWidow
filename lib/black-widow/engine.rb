@@ -1,17 +1,17 @@
 require 'erb' 					# ERuby template engine
 require 'pathname' 				# finding paths
 
-module Redwood
+module BlackWidow
 	##
 	# This class contains all the functionality required for rendering
 	#		 HTML pages and partials
 	#
 	# The set of all assets required to render a page, such as the page template
 	# and it's context, are collectively known as a +view+. View assets must be
-	# located in specific locations, as Redwood follows a 'configuration by
+	# located in specific locations, as Black Widow follows a 'configuration by
 	# convention' principle.
 	#
-	# Redwood's conventions are based heavily on Ruby on Rails. If you are 
+	# Black Widow's conventions are based heavily on Ruby on Rails. If you are 
 	# familiar with Rails, ViewEngine works much like ActionView.
 	#
 	#   * page templates must be located in the `src/pages` directory
@@ -39,7 +39,7 @@ module Redwood
 		# Creates a new ViewEngine.
 		#
 		# @param root_dir: String | Pathname
-		# 	Directory of a Redwood project's source code. This directory must
+		# 	Directory of a Black Widow project's source code. This directory must
 		#	be the immediate parent of all view component VIEW_FOLDERS.
 		#
 		def initialize(root_dir = Dir.pwd)

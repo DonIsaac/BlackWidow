@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Redwood
+# BlackWidow
 # by Donald Isaac (https://www.opensourceryumd.com)
 # Copyright (c) 2019 Open Sourcery. See LICENSE for license details.
 
 require 'pathname'
 require 'getoptlong'
-require 'redwood'
+require 'black-widow'
 
 # Base command usage message
 USAGE = {}
@@ -16,32 +16,32 @@ HELP = {}
 # Usage messages
 
 USAGE[:base] = <<-EOF
-usage: redwood [--help] [--version] command
+usage: black-widow [--help] [--version] command
 EOF
 
 USAGE[:generate] = <<-EOF
-usage: redwood generate [--help] <component> [--name <name>]
+usage: black-widow generate [--help] <component> [--name <name>]
 EOF
 
 USAGE[:new] = <<-EOF
-usage: redwood new [--help] --name <name>
+usage: black-widow new [--help] --name <name>
 EOF
 
 USAGE[:render] = <<-EOF
-usage: redwood render [--help] <root-dir>
+usage: black-widow render [--help] <root-dir>
 EOF
 
 # Help messages
 
 HELP[:base] = <<-EOF
-usage: redwood [--help] [--version] <command>
+usage: black-widow [--help] [--version] <command>
 
 Options:
 	-h, --help			Display this help message
-	-v, --version		Display Redwood's version
+	-v, --version		Display BlackWidow's version
 
 Available commands:
-	new					Create a new Redwood project
+	new					Create a new BlackWidow project
 	generate			Generate a new view component
 	render				Compile a project into a servable site
 EOF
@@ -50,12 +50,12 @@ HELP[:generate] = <<-EOF
 EOF
 
 HELP[:new] = <<-EOF
-usage: redwood new [--help] --name <name>
+usage: black-widow new [--help] --name <name>
 
 Discription:
 	This command generates a project skeleton for you to start your site from.
 	The skeleton is populated with the required view component directories, 
-	along with a default .redwood.yaml file.
+	along with a default .black-widow.yaml file.
 
 Options:
 	-h, --help			Display this help message
@@ -94,7 +94,7 @@ if ARGS[:help] || !!ARGV.length
 end
 
 if ARGS[:version]
-	puts Redwood::VERSION
+	puts BlackWidow::VERSION
 	exit 0
 end
 
@@ -109,13 +109,13 @@ when 'n', 'new'
 when 'g', 'gen', 'generate'
 	type, name, *rest = ARGV{:_}
 
-	if !type || !Redwood::VIEW_FOLDERS.include?(type) then
+	if !type || !BlackWidow::VIEW_FOLDERS.include?(type) then
 		err('Invalid component type', 2)
 	end
 
 	err('You must specify a name.') unless name
 
-	puts "Redwood: This feature does not exist yet."
+	puts "BlackWidow: This feature does not exist yet."
 	exit 0
 # Handle 'render' command
 when 'r', 'render'
@@ -132,7 +132,7 @@ else
 end
 
 ##
-# Creates a new Redwood project skeleton
+# Creates a new BlackWidow project skeleton
 #
 # This function creates a new project directory and populates it with a
 # config.yaml file and folders for view components.
@@ -154,12 +154,12 @@ def init_project name
 	ViewEngine::FOLDERS.each_value do |dir|
 		root.mkpath dir
 	end
-	config = File.new root.join(Redwood::CONFIG_FILE_NAME), 'w+'
+	config = File.new root.join(BlackWidow::CONFIG_FILE_NAME), 'w+'
 end
 
 def render_project
 	# Project root directory is the directory with the config file
-	root = File.dirname Redwood::resolve_config
+	root = File.dirname BlackWidow::resolve_config
 	Dir.chdir root
 end
 
@@ -176,9 +176,9 @@ def err err, status = 1
 	err_type = if err.is_a? Error then err.class.name else 'Error' end
 	err_msg = err.message || err
 
-	puts "Redwood: - #{err.type} #{err_msg}"
+	puts "BlackWidow: - #{err.type} #{err_msg}"
 	exit status
 end
 
-# engine = Redwood::ViewEngine.new Pathname.new(Dir.pwd).join 'src'
+# engine = BlackWidow::ViewEngine.new Pathname.new(Dir.pwd).join 'src'
 # puts(engine.render 'index')

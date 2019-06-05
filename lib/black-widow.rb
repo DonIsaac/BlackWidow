@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 
-# Redwood
+# Black Widow
 # by Donald Isaac (https://www.opensourceryumd.com)
 # Copyright (c) 2019 Open Sourcery. See LICENSE for license details.
-require 'redwood/engine'
+require 'black-widow/engine'
 require 'pathname'
 require 'yaml'
 
-module Redwood
-	CONFIG_FILE_NAME = '.redwood.yaml'
+module BlackWidow
+	CONFIG_FILE_NAME = '.black-widow.yaml'
 	@config = nil
 	
 	##
@@ -23,11 +23,11 @@ module Redwood
 	def self.resolve_config
 		config_path = Pathname.new Dir.pwd
 
-		# Ascend up the file tree until a .redwood.yaml file is found
+		# Ascend up the file tree until a .black-widow.yaml file is found
 		until config_path.children(false).include? CONFIG_FILE_NAME do
 			# A path is equal to its parent if and only if it is the root directory
 			if config_path == config_path.parent
-				raise IOError.new 'Redwood: Could not find a ' + CONFIG_FILE_NAME +
+				raise IOError.new 'BlackWidow: Could not find a ' + CONFIG_FILE_NAME +
 				' file. Are you running this command in your project directory?'
 			else
 				config_path = config_path.parent

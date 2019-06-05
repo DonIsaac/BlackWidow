@@ -1,20 +1,20 @@
 lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'redwood/version'
+require 'black-widow/version'
 
 Gem::Specification.new do |s|
-	s.name        	= 'redwood'
-	s.version     	= Redwood::VERSION
+	s.name        	= 'black-widow'
+	s.version     	= BlackWidow::VERSION
 	s.platform    = Gem::Platform::RUBY
-	s.summary     	= "Redwood Static Site Generator"
+	s.summary     	= "BlackWidow Static Site Generator"
 	s.description 	= "A simple static site generator powered by eRuby"
 	s.author     	= "Donald Isaac"
 	s.homepage    	= 'https://www.opensourceryumd.com'
 	s.license     	= 'MIT'
 	# s.bindir	  	= 'bin'
 
-	s.add_dependency 'rake'
+	s.add_dependency 'rake', '~> 0'
 
 	s.files       	= `git ls-files`.split("\n")
 
