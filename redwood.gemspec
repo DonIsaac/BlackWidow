@@ -1,6 +1,8 @@
+require 'redwood/version'
+
 Gem::Specification.new do |s|
 	s.name        = 'redwood'
-	s.version     = '0.0.1'
+	s.version     = Redwood::VERSION
 	s.date        = '2019-06-05'
 	s.summary     = "Redwood Static Site Generator"
 	s.description = "A simple static site generator powered by eRuby"

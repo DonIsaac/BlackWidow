@@ -3,12 +3,12 @@
 # Redwood
 # by Donald Isaac (https://www.opensourceryumd.com)
 # Copyright (c) 2019 Open Sourcery. See LICENSE for license details.
-require_relative 'engine'
+require 'redwood/engine'
 require 'pathname'
 require 'yaml'
 
 module Redwood
-
+	CONFIG_FILE_NAME = '.redwood.yaml'
 	CONFIG = YAML.load_file resolve_config
 	
 	##
@@ -24,10 +24,11 @@ module Redwood
 		config_path = Pathname.new Dir.pwd
 
 		# Ascend up the file tree until a .redwood.yaml file is found
-		until config_path.children(false).include? '.redwood.yaml' do
+		until config_path.children(false).include? CONFIG_FILE_NAME do
 			# A path is equal to its parent if and only if it is the root directory
 			if config_path == config_path.parent
-				raise IOError 'Redwood: Could not find .redwood.yaml config file.'
+				raise IOError 'Redwood: Could not find a ' + CONFIG_FILE_NAME +
+				' file. Are you running this command in your project directory?'
 			else
 				config_path = config_path.parent
 			end

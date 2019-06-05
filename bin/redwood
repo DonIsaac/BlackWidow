@@ -1,54 +1,139 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 # Redwood
 # by Donald Isaac (https://www.opensourceryumd.com)
 # Copyright (c) 2019 Open Sourcery. See LICENSE for license details.
 
 require 'pathname'
+require 'getoptlong'
+require 'redwood'
 
-gem 'redwood'
+# Base command usage message
+USAGE = <<-EOF
+EOF
 
-module Redwood
+# 'generate' command usage message
+USAGE_GENERATE = <<-EOF
+EOF
 
-	puts Dir.pwd
-	exit 0
-	##
-	# Creates a new DocuBuld project outline
-	#
-	# This function creates a new project directory and populates it with a
-	# config.yaml file and folders for view components.
-	#
-	# @param name: String
-	#		The name of the project. This will also be the name of the project
-	#		directory.
-	#
-	# @return void
-	#
-	def init_project name
-		root = Pathname.new Dir.pwd
-		if (root + name).exist? then
-			raise ArgumentError 'Project could not be created: directory already exists.'
-			exit 1
+# 'new' command usage message
+USAGE_NEW = <<-EOF
+EOF
+
+HELP = <<-EOF
+EOF
+
+# :_ key is all unnamed arguments from ARGV
+ARGS = { _: [] }
+next_arg = :command # First unnamed arg is expected to be a sub command
+ARGV.each do |arg|
+	case arg
+	when '-h', '--help'			then ARGS[:help] 	= true
+	when '-v', '--version'		then ARGS[:version] = true
+	when '-n', '--name'			then next_arg = :name
+		# TODO: Are more args needed?
+	else
+		if next_arg
+			ARGS[next_arg] = arg
+			next_arg = nil
+		else
+			ARGS[:_].push arg
 		end
-
-		root.mkpath name
-		root.join name
-		ViewEngine::FOLDERS.each_value do |dir|
-			root.mkpath dir
-		end
-		config = File.new root.join('.redwood.yaml'), 'w+'
-	end
-
-	def render_project
-		# Project root directory is the directory with the config file
-		root = File.dirname Redwood::resolve_config
-		Dir.chdir root
 	end
 end
-# module Redwood
-# 	class Redwood
-# 	end
-# end
 
-engine = Redwood::ViewEngine.new Pathname.new(Dir.pwd).join 'src'
-puts(engine.render 'index')
+if ARGS[:help]
+	puts HELP 
+	exit 0
+end
+
+if ARGS[:version]
+	puts Redwood::VERSION
+	exit 0
+end
+
+case ARGS[:command]
+# Handle 'new' command
+when 'n', 'new'
+	unless ARGS[:name]
+		puts USAGE_NEW
+		exit 1
+	end
+# Handle 'generate' command
+when 'g', 'gen', 'generate'
+	type, name, *rest = ARGV{:_}
+
+	if !type || !Redwood::VIEW_FOLDERS.include?(type) then
+		err('Invalid component type', 2)
+	end
+
+	err('You must specify a name.') unless name
+
+	puts "Redwood: This feature does not exist yet."
+	exit 0
+# Handle 'render' command
+when 'r', 'render'
+	begin
+		render_project
+	rescue StandardError => e
+		err(e, 3)
+	end
+
+	exit 0
+else
+	puts USAGE
+	exit 1
+end
+
+##
+# Creates a new Redwood project skeleton
+#
+# This function creates a new project directory and populates it with a
+# config.yaml file and folders for view components.
+#
+# @param name: String
+#		The name of the project. This will also be the name of the project
+#		directory.
+#
+# @return void
+#
+def init_project name
+	root = Pathname.new Dir.pwd
+	if (root + name).exist? then
+		raise ArgumentError 'Project could not be created; directory already exists.'
+	end
+
+	root.mkpath name
+	root.join name
+	ViewEngine::FOLDERS.each_value do |dir|
+		root.mkpath dir
+	end
+	config = File.new root.join(Redwood::CONFIG_FILE_NAME), 'w+'
+end
+
+def render_project
+	# Project root directory is the directory with the config file
+	root = File.dirname Redwood::resolve_config
+	Dir.chdir root
+end
+
+##
+# Prints an error message and exits with an error status
+#
+# @param err: Exception | RuntimeException | StandardErr | String
+# 		The error being thrown.
+#
+# @param status: Number
+#		The exit status. Defaults to 1.
+#
+def err err, status = 1
+	err_type = if err.is_a? Error then err.class.name else 'Error' end
+	err_msg = err.message || err
+
+	puts "Redwood: - #{err.type} #{err_msg}"
+	exit status
+end
+
+# engine = Redwood::ViewEngine.new Pathname.new(Dir.pwd).join 'src'
+# puts(engine.render 'index')

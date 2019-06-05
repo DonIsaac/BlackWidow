@@ -26,9 +26,9 @@ module Redwood
 	#
 	class ViewEngine
 
-		# Directory names for each type of view asset
+		# Keys are the available view components, values are component folder names
 		# TODO: Make this configurable from config.yaml
-		FOLDERS = {
+		VIEW_FOLDERS = {
 			page: 'pages',
 			context: 'contexts',
 			partial: 'partials',
@@ -40,17 +40,17 @@ module Redwood
 		#
 		# @param root_dir: String | Pathname
 		# 	Directory of a Redwood project's source code. This directory must
-		#	be the immediate parent of all view component folders.
+		#	be the immediate parent of all view component VIEW_FOLDERS.
 		#
 		def initialize(root_dir = Dir.pwd)
 			@root = Pathname.new root_dir
 			raise ArgumentError.new "The root path '" + @root.to_s + "'is a file." unless @root.directory?
 
 			@view_components = {
-				page: { dir: @root + Pathname.new(FOLDERS[:page]), ext: '.erb'},
-				context: { dir: @root + Pathname.new(FOLDERS[:context]), ext: '.rb' },
-				partial: { dir: @root + Pathname.new(FOLDERS[:partial]), ext: '.erb' },
-				layout: { dir: @root + Pathname.new(FOLDERS[:layout]), ext: '.erb' }
+				page: { dir: @root + Pathname.new(VIEW_FOLDERS[:page]), ext: '.erb'},
+				context: { dir: @root + Pathname.new(VIEW_FOLDERS[:context]), ext: '.rb' },
+				partial: { dir: @root + Pathname.new(VIEW_FOLDERS[:partial]), ext: '.erb' },
+				layout: { dir: @root + Pathname.new(VIEW_FOLDERS[:layout]), ext: '.erb' }
 			}
 		end
 
