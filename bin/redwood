@@ -9,7 +9,6 @@ require 'pathname'
 gem 'redwood'
 
 module Redwood
-	ENGINE = ViewEngine.new # Pathname.new(Dir.pwd).join 'src'
 
 	puts Dir.pwd
 	exit 0
