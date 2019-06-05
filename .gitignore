@@ -1,0 +1,7 @@
+# Temporary files and folders
+tmp/*
+*.tmp
+**/*/tmp/*
+
+# Logs
+*.log
