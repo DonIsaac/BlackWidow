@@ -1,4 +1,3 @@
 # Black Widow
 
-Do *NOT* use this gem yet! It isn't even close to done!
-*TODO*
+This project has been deprecated, and development efforts have been switched to [Architekt](https://github.com/opensourceryclub/Architekt) 
